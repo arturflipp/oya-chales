@@ -1,0 +1,9 @@
+const menu=document.querySelector('.menu'),nav=document.querySelector('#nav');
+menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));nav.classList.toggle('open',open)});
+nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{menu.setAttribute('aria-expanded','false');nav.classList.remove('open')}));
+const photos=[['oya-0.jpg','Fachada do chalé Oyá e deck entre as árvores'],['oya-1.jpg','Quarto com janela triangular e bandeja de café'],['oya-2.jpg','Sala e cozinha integradas em madeira'],['oya-3.jpg','Hidromassagem no deck com vista para o verde'],['oya-4.jpg','Fachada envidraçada da Casa dos Ventos'],['oya-5.jpg','Quarto com cama e paredes de madeira'],['oya-6.jpg','Quarto com vista para as montanhas'],['oya-7.jpg','Luz alaranjada pela janela triangular']];
+const box=document.querySelector('#lightbox');let selected=0;
+function renderPhoto(){box.querySelector('img').src=''+photos[selected][0];box.querySelector('img').alt=photos[selected][1];box.querySelector('.counter').textContent=`${selected+1} / ${photos.length} — ${photos[selected][1]}`}
+function advance(n){selected=(selected+n+photos.length)%photos.length;renderPhoto()}
+document.querySelectorAll('[data-photo]').forEach(b=>b.addEventListener('click',()=>{selected=Number(b.dataset.photo);renderPhoto();box.showModal();document.body.style.overflow='hidden'}));
+box.querySelector('.close').addEventListener('click',()=>box.close());box.querySelector('.previous').addEventListener('click',()=>advance(-1));box.querySelector('.next').addEventListener('click',()=>advance(1));box.addEventListener('close',()=>document.body.style.overflow='');box.addEventListener('click',e=>{if(e.target===box)box.close()});box.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();advance(1)}if(e.key==='ArrowLeft'){e.preventDefault();advance(-1)}});
